@@ -13,7 +13,7 @@
     <script>
         document.getElementById("refreshButton").addEventListener("click", async function() {
             try {
-                const response = await fetch('/.netlify/functions/refresh-token');
+                const response = await fetch('https://songmaster.netlify.app/.netlify/functions/refresh-token');
 
                 if (response.ok) {
                     const data = await response.json();
@@ -22,8 +22,11 @@
                     document.getElementById("accessToken").textContent = "Error: " + response.statusText;
                 }
             } catch (error) {
-                console.error('Error refreshing token:', error);
-                document.getElementById("accessToken").textContent = "Error: " + error.message;
+                console.error('Error refreshing token:', error.response ? error.response.data : error.message);
+                return {
+                    statusCode: 500,
+                    body: JSON.stringify({ error: 'Error refreshing token', details: error.response ? error.response.data : error.message })
+                };
             }
         });
     </script>
