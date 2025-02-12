@@ -6,7 +6,6 @@ exports.handler = async function(event, context) {
     const refreshToken = process.env.REFRESH_TOKEN;
 
     const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-
     const tokenUrl = 'https://accounts.spotify.com/api/token';
     const data = {
         grant_type: 'refresh_token',
@@ -25,12 +24,22 @@ exports.handler = async function(event, context) {
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ access_token: newAccessToken })
+            body: JSON.stringify({ access_token: newAccessToken }),
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
         };
     } catch (error) {
+        console.error('Error refreshing token:', error);
+
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'Error refreshing token' })
+            body: JSON.stringify({ error: 'Error refreshing token', details: error.message }),
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
         };
     }
 };
