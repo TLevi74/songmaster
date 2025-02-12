@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Test Spotify</title>
 </head>
 <body>
-    <p>test site</p>
+    <h1>Spotify Access Token Refresh Test</h1>
+    <button id="refreshButton">Refresh</button>
+    <p>Access Token: <span id="accessToken">Not fetched yet</span></p>
+
+    <script>
+        document.getElementById("refreshButton").addEventListener("click", async function() {
+            try {
+                const response = await fetch('/.netlify/functions/refresh-token');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById("accessToken").textContent = data.access_token;
+                } else {
+                    document.getElementById("accessToken").textContent = "Error: " + response.statusText;
+                }
+            } catch (error) {
+                console.error('Error refreshing token:', error);
+                document.getElementById("accessToken").textContent = "Error: " + error.message;
+            }
+        });
+    </script>
 </body>
 </html>
