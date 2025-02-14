@@ -9,8 +9,10 @@
     <h1>Coldplay test</h1>
     <img id="coldplay-img" src="" alt="Coldplay Profile Picture" width="300">
     <input type="text" id="search-input" placeholder="Search for an artist">
+    <div id="search-results"></div>
 
     <script>
+        let apikey = "";
         //get the access token:
         async function fetchAccessToken() {
             try {
@@ -18,15 +20,16 @@
                 
                 if (response.ok) {
                     const data = await response.json();
+                    apikey = data.access_token;
                     //rest of the code:
-                    fetchColdplayImage(data.access_token);
+                    fetchColdplayImage();
                 }
             } catch (error) {
                 console.error('Error fetching token:', error);
             }
         }
 
-        async function fetchColdplayImage(apikey) {
+        async function fetchColdplayImage() {
             try {
                 const response = await fetch("https://api.spotify.com/v1/artists/4gzpq5DPGxSnKTe4SA8HAU", {
                     headers: {
@@ -44,7 +47,7 @@
         }
         async function searchResults(searchTerm) {
             try {
-                const response = await fetch("https://api.spotify.com/v1/search?q=" + searchTerm + "&type=artist" + "&limit=3", {
+                const response = await fetch("https://api.spotify.com/v1/search?q=" + encodeURIComponent(searchTerm) + "&type=artist" + "&limit=3", {
                     headers: {
                         "Authorization": "Bearer " + apikey
                     }
@@ -62,7 +65,7 @@
         // Fetch token on page load
         fetchAccessToken();
 
-        document.getElementById("search-input").addEventListener("change", function(event) {
+        document.getElementById("search-input").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 searchResults(event.target.value);
             }
