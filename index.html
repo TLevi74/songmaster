@@ -46,6 +46,12 @@
             }
         }
         async function searchResults(searchTerm) {
+
+            //if (!searchTerm.trim()) {
+            //    document.getElementById("search-results").innerHTML = "";
+            //    return;
+            //}
+
             try {
                 const response = await fetch("https://api.spotify.com/v1/search?q=" + encodeURIComponent(searchTerm) + "&type=artist" + "&limit=3", {
                     headers: {
@@ -55,7 +61,29 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data);
+                    document.getElementById("search-results").innerHTML = "";
+
+                    data.artists.items.forEach(artist => {
+                        const artistDiv = document.createElement("div");
+                        artistDiv.style.display = "flex";
+                        artistDiv.style.alignItems = "center";
+                        artistDiv.style.marginBottom = "10px";
+
+                        const artistImage = document.createElement("img");
+                        artistImage.src = artist.images[0].url;
+                        artistImage.alt = artist.name;
+                        artistImage.width = 50;
+                        artistImage.height = 50;
+                        artistImage.style.borderRadius = "50%";
+                        artistImage.style.marginRight = "10px";
+
+                        const artistName = document.createElement("span");
+                        artistName.textContent = artist.name;
+
+                        artistDiv.appendChild(artistImage);
+                        artistDiv.appendChild(artistName);
+                        document.getElementById("search-results").appendChild(artistDiv);
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching search results:', error);
@@ -65,10 +93,8 @@
         // Fetch token on page load
         fetchAccessToken();
 
-        document.getElementById("search-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                searchResults(event.target.value);
-            }
+        document.getElementById("search-input").addEventListener("input", function(event) {
+            searchResults(event.target.value);
         });
     </script>
 </body>
