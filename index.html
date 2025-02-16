@@ -117,15 +117,45 @@
 
         async function getTopTracks() {
             try {
-                const response = await fetch("https://api.spotify.com/v1/artists/" + selectedArtistId + "/top-tracks?market=US", {
+                const response = await fetch("https://api.spotify.com/v1/artists/" + selectedArtistId + "/albums", {
                     headers: {
                         "Authorization": "Bearer " + apikey
                     }
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
-                    return data.tracks.slice(0, selectedTopTrackNumber);
+                    const albumlist = await response.json();
+                    let tracklist = [];
+                    for await (const album of albumlist.items) {
+                        try {
+                            const albumtracks = await fetch("https://api.spotify.com/v1/albums/" + album.id + "/tracks", {
+                                headers: {
+                                    "Authorization": "Bearer " + apikey
+                                }
+                            });
+                            if (albumtracks.ok) {
+                                const tracks = await albumtracks.json();
+                                for await (const track of tracks.items) {
+                                    try {
+                                        const currenttrack = await fetch("https://api.spotify.com/v1/tracks/" + track.id, {
+                                            headers: {
+                                                "Authorization": "Bearer " + apikey
+                                            }
+                                        });
+                                        if (currenttrack.ok) {
+                                            const trackdata = await currenttrack.json();
+                                            tracklist.push(trackdata);
+                                        }
+                                    } catch (error) {
+                                        console.error('Error fetching track:', error);
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error fetching album tracks:', error);   
+                        }
+                    }
+                    return tracklist;
                 }
             } catch (error) {
                 console.error('Error fetching top tracks:', error);
