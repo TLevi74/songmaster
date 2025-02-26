@@ -261,7 +261,7 @@
                                 },
                                 body: JSON.stringify({
                                     "uris": ["spotify:track:" + randomTrack.id],
-                                    "position_ms": 20000
+                                    "position_ms": 10000 + Math.floor(Math.random() * (randomTrack.duration_ms - selectedTime * 1000 - 20000)),
                                 })
                             });
                         }, i * selectedTime * 1000);
