@@ -200,6 +200,7 @@
                         getOAuthToken: cb => { cb(apikey); }
                     });
                     player.addListener('ready', ({ device_id }) => {
+                        player.setVolume(0.2);
                         resolve(device_id);
                     });
                     player.connect();
@@ -247,6 +248,9 @@
         //back button:
         document.getElementById("back-button").addEventListener("click", function() {
             document.getElementById("game-overlay").style.display = "none";
+            document.getElementById("round-number-p").textContent = "0";
+            document.getElementById("correct-p").textContent = "0/0 correct";
+            toptracks.length = 0;
         });
 
         let correctTrack;
@@ -254,10 +258,20 @@
         function playTrack(){
             const options = [...toptracks].sort(() => 0.5 - Math.random()).slice(0, 3);
             correctTrack = options[Math.floor(Math.random() * 3)];
+
+            document.getElementById("option-1").style.backgroundColor = "white";
+            document.getElementById("option-2").style.backgroundColor = "white";
+            document.getElementById("option-3").style.backgroundColor = "white";
+            document.getElementById("option-1").disabled = false;
+            document.getElementById("option-2").disabled = false;
+            document.getElementById("option-3").disabled = false;
+            document.getElementById("next-button").disabled = true;
             document.getElementById("option-1").textContent = options[0].name;
             document.getElementById("option-2").textContent = options[1].name;
             document.getElementById("option-3").textContent = options[2].name;
+
             document.getElementById("round-number-p").textContent = (parseInt(document.getElementById("round-number-p").textContent) + 1) + "/" + selectedRoundNumber;
+            const currentRoundNumber = parseInt(document.getElementById("round-number-p").textContent.split("/")[0]);
 
             fetch("https://api.spotify.com/v1/me/player/play?device_id=" + deviceid, {
                 method: "PUT",
@@ -268,22 +282,32 @@
                 body: JSON.stringify({
                     "uris": ["spotify:track:" + correctTrack.id],
                     "position_ms": 10000 + Math.floor(Math.random() * (correctTrack.duration_ms - selectedTime * 1000 - 20000)),
+                    
                 })
             });
             //pause the track after the time:
             setTimeout(() => {
-                fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": "Bearer " + apikey,
-                        "Content-Type": "application/json",
-                    }
-                });
+                if(currentRoundNumber == document.getElementById("round-number-p").textContent.split("/")[0]) {
+                    fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": "Bearer " + apikey,
+                            "Content-Type": "application/json",
+                        }
+                    });
+                }
             },  selectedTime * 1000);
         }
 
         //guessing the track:
         document.getElementById("option-1").addEventListener("click", function() {
+            fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
+                method: "PUT",
+                headers: {
+                    "Authorization": "Bearer " + apikey,
+                    "Content-Type": "application/json",
+                }
+            });
             //if the correct track is guessed:
             if(correctTrack.name === document.getElementById("option-1").textContent) {
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split(" ")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + " correct";
@@ -306,9 +330,17 @@
             document.getElementById("option-1").disabled = true;
             document.getElementById("option-2").disabled = true;
             document.getElementById("option-3").disabled = true;
+            document.getElementById("next-button").disabled = false;
         });
 
         document.getElementById("option-2").addEventListener("click", function() {
+            fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
+                method: "PUT",
+                headers: {
+                    "Authorization": "Bearer " + apikey,
+                    "Content-Type": "application/json",
+                }
+            });
             //if the correct track is guessed:
             if(correctTrack.name === document.getElementById("option-2").textContent) {
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split(" ")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + " correct";
@@ -331,9 +363,17 @@
             document.getElementById("option-1").disabled = true;
             document.getElementById("option-2").disabled = true;
             document.getElementById("option-3").disabled = true;
+            document.getElementById("next-button").disabled = false;
         });
 
         document.getElementById("option-3").addEventListener("click", function() {
+            fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
+                method: "PUT",
+                headers: {
+                    "Authorization": "Bearer " + apikey,
+                    "Content-Type": "application/json",
+                }
+            });
             //if the correct track is guessed:
             if(correctTrack.name === document.getElementById("option-3").textContent) {
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split(" ")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + " correct";
@@ -356,6 +396,16 @@
             document.getElementById("option-1").disabled = true;
             document.getElementById("option-2").disabled = true;
             document.getElementById("option-3").disabled = true;
+            document.getElementById("next-button").disabled = false;
+        });
+
+        //next button:
+        document.getElementById("next-button").addEventListener("click", function() {
+            if(parseInt(document.getElementById("round-number-p").textContent.split("/")[0]) < selectedRoundNumber) {
+                playTrack();
+            }else {
+
+            }
         });
     </script>
 </body>
