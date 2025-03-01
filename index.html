@@ -17,8 +17,8 @@
     <button id="start-button">Start</button>
 
     <div id="game-overlay">
+        <button id="back-button">Back</button>
         <div id="game-content" style="overflow:scroll; height:100%; width:100%; display:flex; flex-direction:column; align-items:center;">
-            <button id="back-button">Back</button>
             <p id="tracklist-test">tracks</p>
             <p id="round-number-p">0</p>
             <p id="correct-p">0/0 correct</p>
@@ -28,6 +28,11 @@
             <button id="option-3">option-3</button>
 
             <button id="next-button">Next</button>
+        </div>
+        <div id="game-over" style="display:none; overflow:scroll; height: 100%; width: 100%; display: flex; flex-direction:column; align-items: center;">
+            <p>Game Over!</p>
+            <p id="score">0/0 correct</p>
+            <button id="restart-button">Restart</button>
         </div>
     </div>
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
@@ -211,6 +216,8 @@
         let deviceid = "";
         //start game:
         document.getElementById("start-button").addEventListener("click", function() {
+            document.getElementById("game-content").style.display = "flex";
+            document.getElementById("game-over").style.display = "none";
             selectedTopTrackNumber = document.getElementById("top-track-number").value;
             selectedTime = document.getElementById("time-number").value;
             selectedRoundNumber = document.getElementById("round-number").value;
@@ -262,7 +269,11 @@
         let correctTrack;
 
         function playTrack(){
-            const options = [...toptracks].sort(() => 0.5 - Math.random()).slice(0, 3);
+            for (let i = toptracks.length - 1; i >= 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [toptracks[i], toptracks[j]] = [toptracks[j], toptracks[i]];
+            }
+            const options = toptracks.slice(0, 3);
             correctTrack = options[Math.floor(Math.random() * 3)];
 
             document.getElementById("option-1").style.backgroundColor = "white";
@@ -410,8 +421,18 @@
             if(parseInt(document.getElementById("round-number-p").textContent.split("/")[0]) < selectedRoundNumber) {
                 playTrack();
             }else {
-
+                document.getElementById("game-content").style.display = "none";
+                document.getElementById("game-over").style.display = "flex";
+                document.getElementById("score").textContent = document.getElementById("correct-p").textContent;
             }
+        });
+
+        //restart button:
+        document.getElementById("restart-button").addEventListener("click", function() {
+            document.getElementById("round-number-p").textContent = "0";
+            document.getElementById("correct-p").textContent = "0/0 correct";
+            toptracks.length = 0;
+            document.getElementById("game-overlay").style.display = "none";
         });
     </script>
 </body>
