@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SongMaster</title>
+    <title>Song Master</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <input type="text" id="search-input" placeholder="Search for an artist...">
+    <h1>Song Master</h1>
+    <input type="text" autocomplete="off" id="search-input" placeholder="Search for an artist...">
     <div id="search-results"></div>
-    <div>Number of top tracks</div>
-    <input type="number" id="top-track-number" value="30" min="10" max="50" step="5">
-    <div>Time (s) to listen</div>
-    <input type="number" id="time-number" value="10" min="1" max="30">
-    <div>Number of rounds</div>
-    <input type="number" id="round-number" value="10" min="1" max="30">
-    <button id="start-button">Start</button>
+    <div class="input-container">
+        <div class="input-box">
+            <div>Time (s) to listen:</div>
+            <input type="number" id="time-number" value="10" min="1" max="30">
+        </div>
+        <div class="input-box">
+            <div>Number of rounds:</div>
+            <input type="number" id="round-number" value="10" min="1" max="30">
+        </div>
+    </div>
+
+  <button id="start-button">Start</button>
 
     <div id="game-overlay">
         <button id="back-button">Back</button>
-        <div id="game-content" style="overflow:scroll; height:100%; width:100%; display:flex; flex-direction:column; align-items:center;">
-            <p id="tracklist-test">tracks</p>
+        <div id="game-content" style="overflow:scroll; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; margin-top: 30vh;">
+            <!--<p id="tracklist-test">tracks</p>-->
             <p id="round-number-p">0</p>
             <p id="correct-p">0/0 correct</p>
 
@@ -29,7 +36,7 @@
 
             <button id="next-button">Next</button>
         </div>
-        <div id="game-over" style="display:none; overflow:scroll; height: 100%; width: 100%; display: flex; flex-direction:column; align-items: center;">
+        <div id="game-over" style="display:none; overflow:scroll; height: 100%; width: 100%; flex-direction: column; align-items: center; margin-top: 30vh;">
             <p>Game Over!</p>
             <p id="score">0/0 correct</p>
             <button id="restart-button">Restart</button>
@@ -75,7 +82,8 @@
                         const artistDiv = document.createElement("div");
                         artistDiv.style.display = "flex";
                         artistDiv.style.alignItems = "center";
-                        artistDiv.style.marginBottom = "10px";
+                        artistDiv.style.padding = "10px";
+                        artistDiv.style.borderRadius = "10px";
                         artistDiv.setAttribute("data-artist-id", artist.id);
 
                         const artistImage = document.createElement("img");
@@ -130,7 +138,7 @@
 
         document.getElementById("game-overlay").style.display = "none";
         let selectedArtistId = "";
-        let selectedTopTrackNumber = 0;
+        //let selectedTopTrackNumber = 0;
         let selectedTime = 0;
         let selectedRoundNumber = 0;
 
@@ -154,13 +162,13 @@
         document.getElementById("search-results").addEventListener("mouseover", function(event) {
             if(!(event.target.closest("div").id === "search-results") && (selectedArtistId === "")) {
                 event.target.style.cursor = "pointer";
-                event.target.closest("div").style.backgroundColor = "lightgray";
+                event.target.closest("div").style.backgroundColor = "#121212";
             }else {
                 event.target.style.cursor = "default";
             }
         });
         document.getElementById("search-results").addEventListener("mouseout", function(event) {
-            event.target.closest("div").style.backgroundColor = "white";
+            event.target.closest("div").style.backgroundColor = "transparent";
         });
         document.addEventListener("click", function(event) {
             if(!(document.getElementById("search-results").onmouseover) && (selectedArtistId === "")) {
@@ -170,7 +178,7 @@
         });
 
         //number input min and max values:
-        document.getElementById("top-track-number").addEventListener("blur", function(event) {
+        /*document.getElementById("top-track-number").addEventListener("blur", function(event) {
             if(event.target.value < 10) {
                 event.target.value = 10;
             }else if(event.target.value > 50) {
@@ -179,21 +187,28 @@
             if(event.target.value % 5 !== 0) {
                 event.target.value = Math.round(event.target.value / 5) * 5;
             }
-        });
+        });*/
         document.getElementById("time-number").addEventListener("input", function(event) {
-            if(event.target.value < 1) {
-                event.target.value = 1;
-            }else if(event.target.value > 30) {
+            if(event.target.value > 30) {
                 event.target.value = 30;
             }
         });
         document.getElementById("round-number").addEventListener("input", function(event) {
-            if(event.target.value < 1) {
-                event.target.value = 1;
-            }else if(event.target.value > 30) {
+            if(event.target.value > 30) {
                 event.target.value = 30;
             }
         });
+        document.getElementById("time-number").addEventListener("blur", function(event) {
+            if(event.target.value < 1) {
+                event.target.value = 1;
+            }
+        });
+        document.getElementById("round-number").addEventListener("blur", function(event) {
+            if(event.target.value < 1) {
+                event.target.value = 1;
+            }
+        });
+        
         const toptracks = [];
 
         let player;
@@ -216,16 +231,15 @@
         let deviceid = "";
         //start game:
         document.getElementById("start-button").addEventListener("click", function() {
+            if(selectedArtistId === "") {
+                return;
+            };
             document.getElementById("game-content").style.display = "flex";
             document.getElementById("game-over").style.display = "none";
-            selectedTopTrackNumber = document.getElementById("top-track-number").value;
+            //selectedTopTrackNumber = document.getElementById("top-track-number").value;
             selectedTime = document.getElementById("time-number").value;
             selectedRoundNumber = document.getElementById("round-number").value;
 
-            if(selectedArtistId === "") {
-                alert("Please select an artist!");
-                return;
-            };
             const gameoverlay = document.getElementById("game-overlay");
             gameoverlay.style.display = "flex";
             gameoverlay.style.justifyContent = "center";
@@ -244,7 +258,7 @@
 
             getTopTracks().then(tracks => {
                 toptracks.push(...tracks);
-                document.getElementById("tracklist-test").textContent = toptracks.length;
+                //document.getElementById("tracklist-test").textContent = toptracks.length;
                 initializePlayer().then(device_id => {
                     deviceid = device_id;
                     playTrack();
@@ -282,6 +296,10 @@
             document.getElementById("option-1").disabled = false;
             document.getElementById("option-2").disabled = false;
             document.getElementById("option-3").disabled = false;
+            document.getElementById("option-1").classList.remove("disabled");
+            document.getElementById("option-2").classList.remove("disabled");
+            document.getElementById("option-3").classList.remove("disabled");
+            document.getElementById("next-button").classList.add("disabled");
             document.getElementById("next-button").disabled = true;
             document.getElementById("option-1").textContent = options[0].name;
             document.getElementById("option-2").textContent = options[1].name;
@@ -347,6 +365,10 @@
             document.getElementById("option-1").disabled = true;
             document.getElementById("option-2").disabled = true;
             document.getElementById("option-3").disabled = true;
+            document.getElementById("option-1").classList.add("disabled");
+            document.getElementById("option-2").classList.add("disabled");
+            document.getElementById("option-3").classList.add("disabled");
+            document.getElementById("next-button").classList.remove("disabled");
             document.getElementById("next-button").disabled = false;
         });
 
@@ -380,6 +402,10 @@
             document.getElementById("option-1").disabled = true;
             document.getElementById("option-2").disabled = true;
             document.getElementById("option-3").disabled = true;
+            document.getElementById("option-1").classList.add("disabled");
+            document.getElementById("option-2").classList.add("disabled");
+            document.getElementById("option-3").classList.add("disabled");
+            document.getElementById("next-button").classList.remove("disabled");
             document.getElementById("next-button").disabled = false;
         });
 
@@ -413,6 +439,10 @@
             document.getElementById("option-1").disabled = true;
             document.getElementById("option-2").disabled = true;
             document.getElementById("option-3").disabled = true;
+            document.getElementById("option-1").classList.add("disabled");
+            document.getElementById("option-2").classList.add("disabled");
+            document.getElementById("option-3").classList.add("disabled");
+            document.getElementById("next-button").classList.remove("disabled");
             document.getElementById("next-button").disabled = false;
         });
 
