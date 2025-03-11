@@ -11,6 +11,7 @@ body {
     font-family: circular-black;
     color: white;
     font-size: 20px;
+    user-select: none;
 }
 @font-face {
     font-family: 'Circular-Black';
@@ -148,6 +149,9 @@ h2{
     max-height: 50vh;
     display: block;
     margin: 0 auto;
+    max-width: 100%;
+    box-shadow: 0 0 0 3px #1db954;
+    
 }
 .imagediv {
     display: inline-block;
