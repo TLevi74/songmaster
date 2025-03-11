@@ -21,24 +21,24 @@
         </div>
     </div>
 
-  <button id="start-button">Start</button>
-
+    <button id="start-button">Start</button>
+    <div id="footer">To learn more about how to play, <a href="howto.html">click here</a></div>
     <div id="game-overlay">
         <button id="back-button">Back</button>
         <div id="game-content" style="overflow:scroll; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; margin-top: 30vh;">
             <!--<p id="tracklist-test">tracks</p>-->
-            <p id="round-number-p">0</p>
+            <h1 id="round-number-p" style="font-size: 50px;">0</h1>
             <p id="correct-p">0/0 correct</p>
 
             <button id="option-1">option-1</button>
             <button id="option-2">option-2</button>
             <button id="option-3">option-3</button>
 
-            <button id="next-button">Next</button>
+            <button id="next-button" style="margin-top: 5vh;">Next</button>
         </div>
-        <div id="game-over" style="display:none; overflow:scroll; height: 100%; width: 100%; flex-direction: column; align-items: center; margin-top: 30vh;">
+        <div id="game-over" style="font-size: 30px; display:none; overflow:scroll; height: 100%; width: 100%; flex-direction: column; align-items: center; margin-top: 30vh;">
             <p>Game Over!</p>
-            <p id="score">0/0 correct</p>
+            <h1 id="score" style="font-size: 60px; margin-top: 10px;">0/0 correct</h1>
             <button id="restart-button">Restart</button>
         </div>
     </div>
@@ -252,7 +252,7 @@
             gameoverlay.style.position = "fixed";
 
             const backbutton = document.getElementById("back-button");
-            backbutton.style.position = "absolute";
+            backbutton.style.position = "fixed";
             backbutton.style.top = "10px";
             backbutton.style.left = "10px";
 
@@ -289,10 +289,9 @@
             }
             const options = toptracks.slice(0, 3);
             correctTrack = options[Math.floor(Math.random() * 3)];
-
-            document.getElementById("option-1").style.backgroundColor = "white";
-            document.getElementById("option-2").style.backgroundColor = "white";
-            document.getElementById("option-3").style.backgroundColor = "white";
+            document.getElementById("option-1").style.backgroundColor = "#535353";
+            document.getElementById("option-2").style.backgroundColor = "#535353";
+            document.getElementById("option-3").style.backgroundColor = "#535353";
             document.getElementById("option-1").disabled = false;
             document.getElementById("option-2").disabled = false;
             document.getElementById("option-3").disabled = false;
@@ -346,7 +345,7 @@
             //if the correct track is guessed:
             if(correctTrack.name === document.getElementById("option-1").textContent) {
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-1").style.backgroundColor = "green";
+                document.getElementById("option-1").style.backgroundColor = "#2ba30d";
                 document.getElementById("option-2").style.backgroundColor = "red";
                 document.getElementById("option-3").style.backgroundColor = "red";
             }
@@ -355,10 +354,10 @@
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0])) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
                 document.getElementById("option-1").style.backgroundColor = "red";
                 if(document.getElementById("option-2").textContent === correctTrack.name) {
-                    document.getElementById("option-2").style.backgroundColor = "green";
+                    document.getElementById("option-2").style.backgroundColor = "#2ba30d";
                     document.getElementById("option-3").style.backgroundColor = "red";
                 }else {
-                    document.getElementById("option-3").style.backgroundColor = "green";
+                    document.getElementById("option-3").style.backgroundColor = "#2ba30d";
                     document.getElementById("option-2").style.backgroundColor = "red";
                 }
             }
@@ -383,7 +382,7 @@
             //if the correct track is guessed:
             if(correctTrack.name === document.getElementById("option-2").textContent) {
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-2").style.backgroundColor = "green";
+                document.getElementById("option-2").style.backgroundColor = "#2ba30d";
                 document.getElementById("option-1").style.backgroundColor = "red";
                 document.getElementById("option-3").style.backgroundColor = "red";
             }
@@ -392,10 +391,10 @@
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0])) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
                 document.getElementById("option-2").style.backgroundColor = "red";
                 if(document.getElementById("option-1").textContent === correctTrack.name) {
-                    document.getElementById("option-1").style.backgroundColor = "green";
+                    document.getElementById("option-1").style.backgroundColor = "#2ba30d";
                     document.getElementById("option-3").style.backgroundColor = "red";
                 }else {
-                    document.getElementById("option-3").style.backgroundColor = "green";
+                    document.getElementById("option-3").style.backgroundColor = "#2ba30d";
                     document.getElementById("option-1").style.backgroundColor = "red";
                 }
             }
@@ -420,7 +419,7 @@
             //if the correct track is guessed:
             if(correctTrack.name === document.getElementById("option-3").textContent) {
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-3").style.backgroundColor = "green";
+                document.getElementById("option-3").style.backgroundColor = "#2ba30d";
                 document.getElementById("option-1").style.backgroundColor = "red";
                 document.getElementById("option-2").style.backgroundColor = "red";
             }
@@ -429,10 +428,10 @@
                 document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0])) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
                 document.getElementById("option-3").style.backgroundColor = "red";
                 if(document.getElementById("option-1").textContent === correctTrack.name) {
-                    document.getElementById("option-1").style.backgroundColor = "green";
+                    document.getElementById("option-1").style.backgroundColor = "#2ba30d";
                     document.getElementById("option-2").style.backgroundColor = "red";
                 }else {
-                    document.getElementById("option-2").style.backgroundColor = "green";
+                    document.getElementById("option-2").style.backgroundColor = "#2ba30d";
                     document.getElementById("option-1").style.backgroundColor = "red";
                 }
             }

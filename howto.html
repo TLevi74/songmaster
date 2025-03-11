@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to play</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>How to play</h1>
+    <button id="back-button" style="position: fixed; top: 10px; left: 10px; ">Back</button>
+    <!-- Overview Section -->
+    <section class="overview">
+        <h2 class="section-title">Overview</h2>
+        <p class="section-text">
+        <strong>Song Master</strong> is a Spotify-based song guessing game. In this game, you listen to a short snippet from one of an artist's top tracks and try to guess the correct track title from three options. The game uses Spotify's API and Web Playback SDK to fetch and play track snippets, offering a fun and interactive challenge for music fans.
+        </p>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section class="getting-started">
+        <h2 class="section-title">Getting Started</h2>
+        <ol class="steps">
+        <li class="step">
+            <strong>Open the Game:</strong> Launch the game in your web browser.
+        </li>
+        <li class="step">
+            <strong>Search for an Artist:</strong>
+            <ul class="sub-steps">
+            <li class="sub-step">Use the search bar at the top of the page to type in the name of an artist.</li>
+            <li class="sub-step">As you type, the game displays search results with artist images, names, and follower counts.</li>
+            <li class="sub-step">Click on the desired artist to select them.</li>
+            </ul>
+            <div class="imagediv">
+                <img class="howtoimage" src="searchbox.png" alt="Artist Search">
+                <p class="screenshot-placeholder"><i>Artist Search</i></p>
+            </div>
+        </li>
+        <li class="step">
+            <strong>Configure Game Settings:</strong>
+            <ul class="sub-steps">
+            <li class="sub-step"><strong>Time (s) to Listen:</strong> Set how many seconds each track snippet should play. The default value is 10 seconds (allowed range: 1-30 seconds).</li>
+            <li class="sub-step"><strong>Number of Rounds:</strong> Choose the total number of rounds (guesses) for the game. The default is 10 rounds (allowed range: 1-30 rounds).</li>
+            </ul>
+            <div class="imagediv">
+                <img class="howtoimage" src="roundconfig.png" alt="Game Settings">
+                <p class="screenshot-placeholder"><i>Game Settings</i></p>
+            </div>
+        </li>
+        </ol>
+    </section>
+
+    <!-- How to Play Section -->
+    <section class="how-to-play">
+        <h2 class="section-title">How to Play</h2>
+        <ol class="steps">
+        <li class="step">
+            <strong>Start the Game:</strong> After selecting an artist and configuring the settings, click the <em>Start</em> button. The game overlay will appear, displaying the game content.
+        </li>
+        <li class="step">
+            <strong>Game Interface:</strong>
+            <ul class="sub-steps">
+            <li class="sub-step"><strong>Round Information:</strong> The overlay shows the current round (e.g., "1/10") and your score (e.g., "0/0 correct").</li>
+            <li class="sub-step"><strong>Track Snippet:</strong> A random track snippet from the selected artist’s top tracks is played. The snippet starts at a random position in the track.</li>
+            <li class="sub-step"><strong>Answer Options:</strong> You are presented with three buttons, each displaying a track title. Click the button corresponding to the track you believe is playing.</li>
+            </ul>
+            <div class="imagediv">
+                <img class="howtoimage" src="gamescreen.png" alt="Game In-Progress">
+                <p class="screenshot-placeholder"><i>Game In-Progress</i></p>
+            </div>
+        </li>
+        <li class="step">
+            <strong>Making a Guess:</strong>
+            <ul class="sub-steps">
+            <li class="sub-step">If you select the correct track, your chosen button turns green while the other options turn red.</li>
+            <li class="sub-step">If your guess is incorrect, the correct answer will be highlighted in green and your selection will turn red.</li>
+            <li class="sub-step">After making a guess, the answer buttons are disabled and a <em>Next</em> button becomes available.</li>
+            </ul>
+        </li>
+        <li class="step">
+            <strong>Proceeding Through Rounds:</strong> Click the <em>Next</em> button to move to the following round. This process repeats until you complete all the rounds set at the beginning.
+        </li>
+        <li class="step">
+            <strong>Game Over:</strong> After completing the final round, the game over screen is displayed with your final score and a <em>Restart</em> button to play again.
+            
+        </li>
+        <div class="imagediv">
+            <img class="howtoimage" src="gameoverscreen.png" alt="Game Over">
+            <p class="screenshot-placeholder"><i>Game Over</i></p>
+        </div>
+        </ol>
+    </section>
+
+    <!-- Exiting and Restarting Section -->
+    <section class="exiting-restarting">
+        <h2 class="section-title">Exiting and Restarting the Game</h2>
+        <ul class="steps">
+        <li class="step">
+            <strong>Back Button:</strong> At any point during the game, click the <em>Back</em> button (located in the top left corner) to exit the game overlay and pause playback.
+        </li>
+        <li class="step">
+            <strong>Restart Option:</strong> After the game ends, click the <em>Restart</em> button on the game over screen to reset your score and play again.
+        </li>
+        </ul>
+    </section>
+
+    <!-- Technical Details Section -->
+    <section class="technical-details">
+        <h2 class="section-title">Technical Details</h2>
+        <p class="section-text">
+        <strong>Spotify Integration:</strong> The game fetches an access token from a backend service to interact with Spotify’s API. It uses the Spotify Web Playback SDK to stream track snippets directly in the browser.
+        </p>
+        <p class="section-text">
+        <strong>Randomized Snippet Playback:</strong> Each track snippet starts at a random position within the song, ensuring a unique challenge every round.
+        </p>
+        <p class="section-text">
+        <strong>Responsive Interface:</strong> The design is responsive and works well across different devices and screen sizes.
+        </p>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section class="troubleshooting">
+        <h2 class="section-title">Troubleshooting</h2>
+        <ul class="steps">
+        <li class="step">
+            <strong>Search Problems:</strong> If no artist results appear, double-check your internet connection or try a different search term.
+        </li>
+        <li class="step">
+            <strong>Other Bugs:</strong> If you encounter any unexpected behavior, consider checking your browser’s console for error messages or contact support.
+        </li>
+        </ul>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section class="conclusion">
+        <h2 class="section-title">Conclusion</h2>
+        <p class="section-text">
+        Enjoy playing <strong>Song Master</strong> and put your knowledge of your favorite artists to the test! Whether you're a casual listener or a dedicated fan, this game provides an exciting and challenging musical experience.
+        </p>
+        <p class="section-text">
+        Now you are ready to <a href="index.html">play</a>!
+        </p>
+    </section>
+
+    <script>
+        document.getElementById("back-button").addEventListener("click", function() {
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

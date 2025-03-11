@@ -95,3 +95,65 @@ button:not(.disabled):hover{
     text-align: left;
     min-width: 250px;
 }
+button:disabled{
+    background-color: #212121;
+}
+#footer{
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #535353;
+}
+a{
+    color: #b3b3b3;
+    text-decoration: none;
+}
+a:hover{
+    color: #1db954;
+}
+section{
+    display: absolute;
+    align-items: left;
+    text-align: left;
+    margin: 10px;
+    padding: 10px;
+}
+li{
+    list-style-type: square;
+    margin: 10px;
+    padding: 2px;
+}
+ul{
+    margin: 10px;
+    padding: 5px;
+}
+h2{
+    font-size: 2em;
+    text-shadow:
+               1px 10px 5px rgba(16, 16, 16, 0.5),
+               1px 15px 10px rgba(16, 16, 16, 0.4),
+               1px 20px 30px rgba(16, 16, 16, 0.3),
+               1px 25px 50px rgba(16, 16, 16, 0.2);
+}
+.screenshot-placeholder {
+    font-size: 15px;
+    color: #b3b3b3;
+    width: 100%;
+    text-align: center;
+}
+.howtoimage {
+    border-radius: 50px;
+    max-height: 50vh;
+    display: block;
+    margin: 0 auto;
+}
+.imagediv {
+    display: inline-block;
+    text-align: center;
+    margin: 10px;
+}
+strong{
+    color: #1db954;
+}
