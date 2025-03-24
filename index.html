@@ -130,7 +130,6 @@
 
         document.getElementById("game-overlay").style.display = "none";
         let selectedArtistId = "";
-        //let selectedTopTrackNumber = 0;
         let selectedTime = 0;
         let selectedRoundNumber = 0;
 
@@ -216,7 +215,6 @@
             };
             document.getElementById("game-content").style.display = "flex";
             document.getElementById("game-over").style.display = "none";
-            //selectedTopTrackNumber = document.getElementById("top-track-number").value;
             selectedTime = document.getElementById("time-number").value;
             selectedRoundNumber = document.getElementById("round-number").value;
 
@@ -238,7 +236,6 @@
 
             getTopTracks().then(tracks => {
                 toptracks.push(...tracks);
-                //document.getElementById("tracklist-test").textContent = toptracks.length;
                 initializePlayer().then(device_id => {
                     deviceid = device_id;
                     playTrack();
@@ -327,34 +324,31 @@
                 const selectedOption = event.target;
                 const selectedText = selectedOption.textContent;
 
-                // Update the correct/total score
+                // Update the score
                 const correctCount = parseInt(document.getElementById("correct-p").textContent.split("/")[0]);
                 const totalCount = parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1;
 
                 if (correctTrack.name === selectedText) {
                     document.getElementById("correct-p").textContent = `${correctCount + 1}/${totalCount} correct`;
-                    selectedOption.style.backgroundColor = "#2ba30d"; // Green for correct
+                    selectedOption.style.backgroundColor = "#2ba30d";
                 } else {
                     document.getElementById("correct-p").textContent = `${correctCount}/${totalCount} correct`;
-                    selectedOption.style.backgroundColor = "red"; // Red for incorrect
+                    selectedOption.style.backgroundColor = "red";
                 }
 
-                // Highlight the correct option
                 document.querySelectorAll("#option-1, #option-2, #option-3").forEach(opt => {
                     if (opt.textContent === correctTrack.name) {
-                        opt.style.backgroundColor = "#2ba30d"; // Green for correct
+                        opt.style.backgroundColor = "#2ba30d";
                     } else if (opt !== selectedOption) {
-                        opt.style.backgroundColor = "red"; // Red for incorrect
+                        opt.style.backgroundColor = "red";
                     }
                 });
 
-                // Disable all options
                 document.querySelectorAll("#option-1, #option-2, #option-3").forEach(opt => {
                     opt.disabled = true;
                     opt.classList.add("disabled");
                 });
 
-                // Enable the next button
                 document.getElementById("next-button").classList.remove("disabled");
                 document.getElementById("next-button").disabled = false;
             });
