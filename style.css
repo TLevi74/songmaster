@@ -13,10 +13,12 @@ body {
     font-size: 20px;
     user-select: none;
 }
+
 @font-face {
     font-family: 'Circular-Black';
     src: url(circular-black.ttf);
 }
+
 h1 {
     font-size: 5em;
     margin: 10;
@@ -33,6 +35,14 @@ h1 {
     margin-left: auto;
     margin-right: auto;
 }
+h2{
+    font-size: 2em;
+    text-shadow:
+               1px 10px 5px rgba(16, 16, 16, 0.5),
+               1px 15px 10px rgba(16, 16, 16, 0.4),
+               1px 20px 30px rgba(16, 16, 16, 0.3),
+               1px 25px 50px rgba(16, 16, 16, 0.2);
+}
 
 input{
     box-shadow:  #535353 0 0 0 3px;
@@ -46,7 +56,6 @@ input{
     transition: all .2s ease;
     font-family: circular-black;
     margin: 10px;
-    
 }
 input:hover{
     background-color: #d1d1d1;
@@ -57,6 +66,7 @@ input:focus{
     outline: 0;
     box-shadow: #1db954 0 0 0 4px;
 }
+
 button{
     outline: none;
     cursor: pointer;
@@ -80,12 +90,17 @@ button:not(.disabled):hover{
     transform: scale(1.04);
     background-color: #21e065;
 }
+button:disabled{
+    background-color: #212121;
+}
+
 .input-container {
     display: flex;
     justify-content: center;
     gap: 10vw;
     margin: 20px 20px;
 }
+
 #search-results{
     display: block;
     justify-content: center;
@@ -96,9 +111,7 @@ button:not(.disabled):hover{
     text-align: left;
     min-width: 250px;
 }
-button:disabled{
-    background-color: #212121;
-}
+
 #footer{
     position: fixed;
     bottom: 20px;
@@ -107,6 +120,7 @@ button:disabled{
     font-size: 12px;
     color: #535353;
 }
+
 a{
     color: #b3b3b3;
     text-decoration: none;
@@ -121,6 +135,7 @@ section{
     margin: 10px;
     padding: 10px;
 }
+
 li{
     list-style-type: square;
     margin: 10px;
@@ -130,20 +145,14 @@ ul{
     margin: 10px;
     padding: 5px;
 }
-h2{
-    font-size: 2em;
-    text-shadow:
-               1px 10px 5px rgba(16, 16, 16, 0.5),
-               1px 15px 10px rgba(16, 16, 16, 0.4),
-               1px 20px 30px rgba(16, 16, 16, 0.3),
-               1px 25px 50px rgba(16, 16, 16, 0.2);
-}
+
 .screenshot-placeholder {
     font-size: 15px;
     color: #b3b3b3;
     width: 100%;
     text-align: center;
 }
+
 .howtoimage {
     border-radius: 50px;
     max-height: 50vh;
@@ -153,11 +162,70 @@ h2{
     box-shadow: 0 0 0 3px #1db954;
     
 }
+
 .imagediv {
     display: inline-block;
     text-align: center;
     margin: 10px;
 }
+
 strong{
     color: #1db954;
+}
+
+#game-content{
+    overflow:scroll;
+    height:100%;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top: 30vh;
+}
+
+#round-number-p{
+    font-size: 50px;
+}
+
+#next-button{
+    margin-top: 5vh;
+}
+
+#game-over{
+    font-size: 30px;
+    display:none;
+    overflow:scroll;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30vh;
+}
+
+#score{
+    font-size: 60px;
+    margin-top: 10px;
+}
+
+.artist-div {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.artist-image {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.artist-name {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.artist-followers {
+    color: gray;
+    font-size: 0.7em;
+    font-weight: normal;
 }

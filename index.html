@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Song Master</title>
+    <link rel="icon" href="icon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,20 +26,19 @@
     <div id="footer">To learn more about how to play, <a href="howto.html">click here</a></div>
     <div id="game-overlay">
         <button id="back-button">Back</button>
-        <div id="game-content" style="overflow:scroll; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; margin-top: 30vh;">
-            <!--<p id="tracklist-test">tracks</p>-->
-            <h1 id="round-number-p" style="font-size: 50px;">0</h1>
+        <div id="game-content">
+            <h1 id="round-number-p">0</h1>
             <p id="correct-p">0/0 correct</p>
 
             <button id="option-1">loading...</button>
             <button id="option-2">loading...</button>
             <button id="option-3">loading...</button>
 
-            <button id="next-button" style="margin-top: 5vh;">Next</button>
+            <button id="next-button">Next</button>
         </div>
-        <div id="game-over" style="font-size: 30px; display:none; overflow:scroll; height: 100%; width: 100%; flex-direction: column; align-items: center; margin-top: 30vh;">
+        <div id="game-over">
             <p>Game Over!</p>
-            <h1 id="score" style="font-size: 60px; margin-top: 10px;">0/0 correct</h1>
+            <h1 id="score">0/0 correct</h1>
             <button id="restart-button">Restart</button>
         </div>
     </div>
@@ -53,7 +53,6 @@
                 if (response.ok) {
                     const data = await response.json();
                     apikey = data.access_token;
-                    //rest of the code:
                 }
             } catch (error) {
                 console.error('Error fetching token:', error);
@@ -80,29 +79,22 @@
                     //adding the artists to the search results:
                     data.artists.items.forEach(artist => {
                         const artistDiv = document.createElement("div");
-                        artistDiv.style.display = "flex";
-                        artistDiv.style.alignItems = "center";
-                        artistDiv.style.padding = "10px";
-                        artistDiv.style.borderRadius = "10px";
+                        artistDiv.classList.add("artist-div");
                         artistDiv.setAttribute("data-artist-id", artist.id);
 
                         const artistImage = document.createElement("img");
                         artistImage.src = artist.images[0].url;
                         artistImage.width = 50;
                         artistImage.height = 50;
-                        artistImage.style.borderRadius = "50%";
-                        artistImage.style.marginRight = "10px";
+                        artistImage.classList.add("artist-image");
 
                         const artistName = document.createElement("span");
                         artistName.textContent = artist.name;
-                        artistName.style.fontFamily = "sans-serif";
-                        artistName.style.fontWeight = "bold";
+                        artistName.classList.add("artist-name");
 
                         const artistFollowers = document.createElement("span");
-                        artistFollowers.textContent = (artist.followers.total/1000000).toFixed(2) + "M";
-                        artistFollowers.style.color = "gray";
-                        artistFollowers.style.fontSize = "0.7em";
-                        artistFollowers.style.fontWeight = "normal";
+                        artistFollowers.textContent = (artist.followers.total / 1000000).toFixed(2) + "M";
+                        artistFollowers.classList.add("artist-followers");
 
                         artistDiv.appendChild(artistImage);
                         artistDiv.appendChild(artistName);
@@ -176,18 +168,6 @@
                 document.getElementById("search-results").innerHTML = "";
             }
         });
-
-        //number input min and max values:
-        /*document.getElementById("top-track-number").addEventListener("blur", function(event) {
-            if(event.target.value < 10) {
-                event.target.value = 10;
-            }else if(event.target.value > 50) {
-                event.target.value = 50;
-            }
-            if(event.target.value % 5 !== 0) {
-                event.target.value = Math.round(event.target.value / 5) * 5;
-            }
-        });*/
         document.getElementById("time-number").addEventListener("input", function(event) {
             if(event.target.value > 30) {
                 event.target.value = 30;
@@ -334,115 +314,50 @@
         }
 
         //guessing the track:
-        document.getElementById("option-1").addEventListener("click", function() {
-            fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
-                method: "PUT",
-                headers: {
-                    "Authorization": "Bearer " + apikey,
-                    "Content-Type": "application/json",
-                }
-            });
-            //if the correct track is guessed:
-            if(correctTrack.name === document.getElementById("option-1").textContent) {
-                document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-1").style.backgroundColor = "#2ba30d";
-                document.getElementById("option-2").style.backgroundColor = "red";
-                document.getElementById("option-3").style.backgroundColor = "red";
-            }
-            //if the wrong track is guessed:
-            else {
-                document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0])) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-1").style.backgroundColor = "red";
-                if(document.getElementById("option-2").textContent === correctTrack.name) {
-                    document.getElementById("option-2").style.backgroundColor = "#2ba30d";
-                    document.getElementById("option-3").style.backgroundColor = "red";
-                }else {
-                    document.getElementById("option-3").style.backgroundColor = "#2ba30d";
-                    document.getElementById("option-2").style.backgroundColor = "red";
-                }
-            }
-            document.getElementById("option-1").disabled = true;
-            document.getElementById("option-2").disabled = true;
-            document.getElementById("option-3").disabled = true;
-            document.getElementById("option-1").classList.add("disabled");
-            document.getElementById("option-2").classList.add("disabled");
-            document.getElementById("option-3").classList.add("disabled");
-            document.getElementById("next-button").classList.remove("disabled");
-            document.getElementById("next-button").disabled = false;
-        });
+        document.querySelectorAll("#option-1, #option-2, #option-3").forEach(option => {
+            option.addEventListener("click", function (event) {
+                fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": "Bearer " + apikey,
+                        "Content-Type": "application/json",
+                    },
+                });
 
-        document.getElementById("option-2").addEventListener("click", function() {
-            fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
-                method: "PUT",
-                headers: {
-                    "Authorization": "Bearer " + apikey,
-                    "Content-Type": "application/json",
-                }
-            });
-            //if the correct track is guessed:
-            if(correctTrack.name === document.getElementById("option-2").textContent) {
-                document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-2").style.backgroundColor = "#2ba30d";
-                document.getElementById("option-1").style.backgroundColor = "red";
-                document.getElementById("option-3").style.backgroundColor = "red";
-            }
-            //if the wrong track is guessed:
-            else {
-                document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0])) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-2").style.backgroundColor = "red";
-                if(document.getElementById("option-1").textContent === correctTrack.name) {
-                    document.getElementById("option-1").style.backgroundColor = "#2ba30d";
-                    document.getElementById("option-3").style.backgroundColor = "red";
-                }else {
-                    document.getElementById("option-3").style.backgroundColor = "#2ba30d";
-                    document.getElementById("option-1").style.backgroundColor = "red";
-                }
-            }
-            document.getElementById("option-1").disabled = true;
-            document.getElementById("option-2").disabled = true;
-            document.getElementById("option-3").disabled = true;
-            document.getElementById("option-1").classList.add("disabled");
-            document.getElementById("option-2").classList.add("disabled");
-            document.getElementById("option-3").classList.add("disabled");
-            document.getElementById("next-button").classList.remove("disabled");
-            document.getElementById("next-button").disabled = false;
-        });
+                const selectedOption = event.target;
+                const selectedText = selectedOption.textContent;
 
-        document.getElementById("option-3").addEventListener("click", function() {
-            fetch("https://api.spotify.com/v1/me/player/pause?device_id=" + deviceid, {
-                method: "PUT",
-                headers: {
-                    "Authorization": "Bearer " + apikey,
-                    "Content-Type": "application/json",
+                // Update the correct/total score
+                const correctCount = parseInt(document.getElementById("correct-p").textContent.split("/")[0]);
+                const totalCount = parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1;
+
+                if (correctTrack.name === selectedText) {
+                    document.getElementById("correct-p").textContent = `${correctCount + 1}/${totalCount} correct`;
+                    selectedOption.style.backgroundColor = "#2ba30d"; // Green for correct
+                } else {
+                    document.getElementById("correct-p").textContent = `${correctCount}/${totalCount} correct`;
+                    selectedOption.style.backgroundColor = "red"; // Red for incorrect
                 }
+
+                // Highlight the correct option
+                document.querySelectorAll("#option-1, #option-2, #option-3").forEach(opt => {
+                    if (opt.textContent === correctTrack.name) {
+                        opt.style.backgroundColor = "#2ba30d"; // Green for correct
+                    } else if (opt !== selectedOption) {
+                        opt.style.backgroundColor = "red"; // Red for incorrect
+                    }
+                });
+
+                // Disable all options
+                document.querySelectorAll("#option-1, #option-2, #option-3").forEach(opt => {
+                    opt.disabled = true;
+                    opt.classList.add("disabled");
+                });
+
+                // Enable the next button
+                document.getElementById("next-button").classList.remove("disabled");
+                document.getElementById("next-button").disabled = false;
             });
-            //if the correct track is guessed:
-            if(correctTrack.name === document.getElementById("option-3").textContent) {
-                document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0]) + 1) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-3").style.backgroundColor = "#2ba30d";
-                document.getElementById("option-1").style.backgroundColor = "red";
-                document.getElementById("option-2").style.backgroundColor = "red";
-            }
-            //if the wrong track is guessed:
-            else {
-                document.getElementById("correct-p").textContent = (parseInt(document.getElementById("correct-p").textContent.split("/")[0])) + "/"+ (parseInt(document.getElementById("correct-p").textContent.split("/")[1]) + 1) + " correct";
-                document.getElementById("option-3").style.backgroundColor = "red";
-                if(document.getElementById("option-1").textContent === correctTrack.name) {
-                    document.getElementById("option-1").style.backgroundColor = "#2ba30d";
-                    document.getElementById("option-2").style.backgroundColor = "red";
-                }else {
-                    document.getElementById("option-2").style.backgroundColor = "#2ba30d";
-                    document.getElementById("option-1").style.backgroundColor = "red";
-                }
-            }
-            document.getElementById("option-1").disabled = true;
-            document.getElementById("option-2").disabled = true;
-            document.getElementById("option-3").disabled = true;
-            document.getElementById("option-1").classList.add("disabled");
-            document.getElementById("option-2").classList.add("disabled");
-            document.getElementById("option-3").classList.add("disabled");
-            document.getElementById("next-button").classList.remove("disabled");
-            document.getElementById("next-button").disabled = false;
         });
 
         //next button:
